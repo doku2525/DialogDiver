@@ -63,7 +63,8 @@ class Timeline(QGraphicsView):
 
         # Füge Markierungen und Beschriftungen hinzu
         interval = 300  # 5 Minuten in Sekunden
-        print(f"{self.zoom_level = } {interval * self.zoom_level = } {interval = } {self.max_y = } {self.width() = } {self.scene.width() = }")
+        print(f"{self.zoom_level = } {interval * self.zoom_level = } {interval = }"
+              f" {self.max_y = } {self.width() = } {self.scene.width() = }")
         while interval * self.zoom_level > self.max_y and interval > 1:
             print(f"inside {interval * self.zoom_level = } {interval = }")
             interval = int(interval / (5 if interval > 60 else 6 if interval > 10 else 10))
@@ -104,7 +105,8 @@ class Timeline(QGraphicsView):
             # text.setFont(QFont("Arial", 8))
             # self.scene.addItem(text)
 
-    def timecode_to_seconds(self, timecode: str) -> float:
+    @staticmethod
+    def timecode_to_seconds(timecode: str) -> float:
         """
         Konvertiert einen SRT-Zeitstempel (HH:MM:SS,MS) in Sekunden.
         """
@@ -123,11 +125,12 @@ class Timeline(QGraphicsView):
         # print( f"{ time = }")
         return (time / self.total_duration) * self.width() * self.zoom_level
 
-    def format_time(self, time_in_s):
+    @staticmethod
+    def format_time(time_in_s):
         # Konvertiere Sekunden in ein Zeitformat (MM:SS)
         minutes = int(time_in_s // 60)
         seconds = int(time_in_s % 60)
-        millis = round(time_in_s - int(time_in_s),3) * 1000
+        millis = round(time_in_s - int(time_in_s), 3) * 1000
         return f"{minutes:02}:{seconds:02}.{millis:03}"
 
     def wheelEvent(self, event):
@@ -139,7 +142,7 @@ class Timeline(QGraphicsView):
             self.zoom_level /= zoom_factor
         if self.zoom_level < 1:
             self.zoom_level = 1
-        #self.scale(zoom_factor if event.angleDelta().y() > 0 else 1 / zoom_factor, 1.0)
+        # self.scale(zoom_factor if event.angleDelta().y() > 0 else 1 / zoom_factor, 1.0)
         self.update_legend()
 
     def update_legend(self):

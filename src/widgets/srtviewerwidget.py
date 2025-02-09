@@ -9,6 +9,7 @@ class SRTViewer(QWidget):
         self.subtitles = subtitles
         self.initUI()
         self.listWidget = None
+        self.setMinimumHeight(600)
 
     def initUI(self):
         layout = QVBoxLayout()
